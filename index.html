@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ HARDWARE_MUTATION // LOGS ]</title>
+    <style>
+        /* --- RESET & ROOT VARIABLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #0d0e10;
+            --panel-bg: #141619;
+            --text-primary: #a0a6b2;
+            --text-muted: #5c6370;
+            --neon-green: #00ff66;
+            --neon-amber: #ffb000;
+            --glitch-pink: #ff0055;
+            --border-style: 2px solid #282c34;
+        }
+
+        /* --- CRT & GLITCH BACKGROUND EFFECT --- */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border: var(--border-style);
+            background-color: var(--panel-bg);
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        /* --- HEADER / ZINE BANNER --- */
+        header {
+            border-bottom: 3px double var(--text-muted);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ascii-art {
+            color: var(--neon-green);
+            font-size: 8px;
+            line-height: 1;
+            white-space: pre;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        h1 {
+            color: var(--neon-green);
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
+        }
+
+        .subtitle {
+            color: var(--neon-amber);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            margin: 15px 0 0 0;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 2px 6px;
+            border: 1px dashed var(--text-muted);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--glitch-pink);
+            color: #fff;
+            border-style: solid;
+            border-color: var(--glitch-pink);
+        }
+
+        /* --- MAIN CONTENT SPLIT --- */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- POSTS / LOGS --- */
+        article {
+            border: var(--border-style);
+            padding: 20px;
+            margin-bottom: 25px;
+            background-color: rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #282c34;
+            padding-bottom: 5px;
+        }
+
+        .post-id {
+            color: var(--neon-amber);
+        }
+
+        h2.post-title {
+            color: #fff;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        h2.post-title span {
+            color: var(--glitch-pink);
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* Code / Tech Blocks */
+        pre, code {
+            background-color: #050608;
+            color: #ced4df;
+            font-size: 0.85rem;
+            padding: 10px;
+            border-left: 3px solid var(--neon-amber);
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        /* --- CUSTOM AUDIO LOG PLAYER --- */
+        .audio-player-card {
+            background: #090a0c;
+            border: 1px solid var(--text-muted);
+            padding: 12px;
+            margin: 15px 0;
+        }
+        .audio-label {
+            font-size: 0.75rem;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        audio {
+            width: 100%;
+            height: 30px;
+            border-radius: 0;
+            filter: invert(1) hue-rotate(90deg) saturate(2); /* Industrializes default player */
+        }
+
+        /* --- SIDEBAR PANEL --- */
+        aside .panel {
+            border: var(--border-style);
+            padding: 15px;
+            background-color: #090a0c;
+            margin-bottom: 20px;
+        }
+
+        aside h3 {
+            color: var(--neon-amber);
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--text-muted);
+            padding-bottom: 3px;
+        }
+
+        aside ul {
+            list-style: none;
+        }
+
+        aside ul li {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        aside ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        aside ul li a:hover {
+            color: var(--neon-green);
+            text-decoration: underline;
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background-color: var(--neon-green);
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 5px;
+            box-shadow: 0 0 6px var(--neon-green);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--text-muted);
+            padding-top: 15px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    
+    <!-- HEADER -->
+    <header>
+<div class="ascii-art">
+ _   _  _   _  ____   ___   __    _  _  ____  ____   ___ 
+( )_( )( )_( )(  _ \ / __)/ __)  ( \/ )(  _ \(  _ \ / __)
+ ) _ (  ) _ (  )   /( (_-.\__ \   \  /  )___/ )   /( (_-.
+(_) (_)(_) (_)(_)\_) \___/(___/    \/  (__)  (_)\_) \___/</div>
+        <h1>Hardware Mutation</h1>
+        <div class="subtitle">// Solder, Noise, Synthesizers, & Broken Code</div>
+        
+        <nav>
+            <a href="#" class="active">[LOGS]</a>
+            <a href="#">[PROJECTS]</a>
+            <a href="#">[INVENTORY]</a>
+            <a href="#">[MANIFESTO]</a>
+        </nav>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="grid">
+        
+        <!-- LEFT COLUMN: BLOG POSTS -->
+        <main>
+            
+            <!-- POST 1 -->
+            <article>
+                <div class="post-meta">
+                    <span class="post-id">LOG_042</span>
+                    <span>TIMESTAMP: 2026.06.01_21:12</span>
+                </div>
+                <h2 class="post-title">Reflowing Solder & <span>Audio Artifacts</span></h2>
+                <p>Spent the evening reviving a dead handheld game circuit board. The traces were clean, but several surface-mount chips had fractured joints from years of oxidation and vibration. Brought out the hot air rework station to reflow the connections.</p>
+                
+                <pre>
+[TOOLSET SETTINGS]
+> Tool: 858D Hot Air Rework
+> Temperature: 340°C
+> Airflow: Level 4
+> Flux: Rosin-based NC</pre>
+                
+                <p>After hitting the lead-free solder points with fresh flux and localized heat, the board booted right up. However, the internal audio amplifier circuit is now outputting a weird, rhythmic high-frequency parasitic hum. Perfect candidate for circuit bending later this week.</p>
+                
+                <div class="audio-player-card">
+                    <div class="audio-label">Raw Audio Output Capture (Parasitic Hum #1)</div>
+                    <!-- Replace src with your audio file paths later -->
+                    <audio controls src=""></audio> 
+                </div>
+            </article>
+
+            <!-- POST 2 -->
+            <article>
+                <div class="post-meta">
+                    <span class="post-id">LOG_041</span>
+                    <span>TIMESTAMP: 2026.05.24_02:45</span>
+                </div>
+                <h2 class="post-title">Building custom <span>Astro widgets</span></h2>
+                <p>Decided to move away from heavy frameworks. Rebuilding the layout engine using zero-JS structural templates. Testing a new custom component that dynamically reads local Markdown directories and maps out hardware component lists based on frontmatter metadata tags.</p>
+                <code>const builds = await Astro.glob('../posts/*.md');</code>
+                <p>The layout feels fast, unbloated, and fits perfectly into the terminal-zine aesthetic without any tracking scripts or bloated modern layout layers.</p>
+            </article>
+
+        </main>
+
+        <!-- RIGHT COLUMN: SIDEBAR -->
+        <aside>
+            
+            <!-- SYSTEM STATUS -->
+            <div class="panel">
+                <h3>System Status</h3>
+                <ul>
+                    <li><span class="status-dot"></span> Node: Online</li>
+                    <li>Location: Central Grid</li>
+                    <li>Current Project: Audio-Rig-V2</li>
+                </ul>
+            </div>
+
+            <!-- RECENT RADAR -->
+            <div class="panel">
+                <h3>Active Lab Projects</h3>
+                <ul>
+                    <li><a href="#">-> DIY Eurorack Module Case</a></li>
+                    <li><a href="#">-> Custom Macro-Pad Firmware</a></li>
+                    <li><a href="#">-> Automated Risk Modules (Python)</a></li>
+                </ul>
+            </div>
+
+            <!-- HARDWARE SCRAPBOOK -->
+            <div class="panel">
+                <h3>Salvage Bin</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Current junk inventory tracking:</p>
+                <ul>
+                    <li>- 2x Raspberry Pi Zero W</li>
+                    <li>- 1x Solderless Breadboard</li>
+                    <li>- Miscellaneous 10k Potentiometers</li>
+                </ul>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>+++ ESCAPE THE ALGORITHM // BUILD THINGS THAT MAKE NOISE +++</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
