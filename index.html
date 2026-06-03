@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[ HARDWARE_MUTATION // LOGS ]</title>
+    <title>[ HARDWARE_MUTATION // HOME_NODE ]</title>
     <style>
-        /* --- RESET & ROOT VARIABLES --- */
+        /* --- CORE ARCHITECTURE & SYSTEM VARIABLES --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,351 +13,488 @@
         }
 
         :root {
-            --bg-color: #0d0e10;
-            --panel-bg: #141619;
-            --text-primary: #a0a6b2;
-            --text-muted: #5c6370;
+            --bg-color: #08090a;
+            --panel-bg: #101216;
+            --text-primary: #a3b8cc;
+            --text-muted: #4f5b66;
             --neon-green: #00ff66;
             --neon-amber: #ffb000;
             --glitch-pink: #ff0055;
-            --border-style: 2px solid #282c34;
+            --terminal-dark: #040506;
+            --border-style: 2px solid #22262e;
         }
 
-        /* --- CRT & GLITCH BACKGROUND EFFECT --- */
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: 'Courier New', Courier, monospace;
-            line-height: 1.6;
-            padding: 20px;
+            line-height: 1.5;
+            padding: 15px;
             position: relative;
-            overflow-x: hidden;
         }
 
-        /* Scanline Overlay */
+        /* CRT SCANLINE OVERLAY */
         body::before {
             content: " ";
             display: block;
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
             background-size: 100% 4px, 6px 100%;
             z-index: 9999;
             pointer-events: none;
         }
 
-        /* --- LAYOUT CONTAINER --- */
-        .wrapper {
-            max-width: 900px;
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
             border: var(--border-style);
             background-color: var(--panel-bg);
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
         }
 
-        /* --- HEADER / ZINE BANNER --- */
+        /* --- INTERFACE BANNER & UTILITIES --- */
         header {
             border-bottom: 3px double var(--text-muted);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .ascii-art {
+        .system-matrix {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--text-muted);
+            padding-bottom: 5px;
+        }
+
+        .ascii-logo {
             color: var(--neon-green);
-            font-size: 8px;
-            line-height: 1;
+            font-size: 7px;
+            line-height: 1.1;
             white-space: pre;
             margin-bottom: 15px;
             overflow-x: auto;
+            text-shadow: 0 0 4px rgba(0,255,102,0.4);
         }
 
         h1 {
-            color: var(--neon-green);
-            font-size: 2rem;
+            color: #fff;
+            font-size: 2.2rem;
             text-transform: uppercase;
             letter-spacing: -1px;
-            text-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
+            text-shadow: 0 0 5px var(--glitch-pink);
         }
 
-        .subtitle {
+        .tagline {
             color: var(--neon-amber);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- GLOBAL NAVIGATION --- */
         nav {
-            margin: 15px 0 0 0;
-            font-weight: bold;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         nav a {
             color: var(--text-primary);
             text-decoration: none;
-            margin-right: 15px;
-            padding: 2px 6px;
-            border: 1px dashed var(--text-muted);
+            padding: 4px 10px;
+            border: 1px solid var(--text-muted);
+            background: rgba(0,0,0,0.3);
+            font-size: 0.9rem;
         }
 
         nav a:hover, nav a.active {
-            background-color: var(--glitch-pink);
-            color: #fff;
-            border-style: solid;
-            border-color: var(--glitch-pink);
+            background-color: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(0,255,102,0.5);
         }
 
-        /* --- MAIN CONTENT SPLIT --- */
-        .grid {
+        /* --- HOMEPAGE DASHBOARD GRID --- */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 320px;
+            gap: 25px;
         }
 
-        @media (max-width: 768px) {
-            .grid {
+        @media (max-width: 900px) {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* --- POSTS / LOGS --- */
-        article {
+        /* --- MAIN CORE NODE --- */
+        .node-section {
             border: var(--border-style);
+            background-color: rgba(0, 0, 0, 0.4);
             padding: 20px;
             margin-bottom: 25px;
-            background-color: rgba(0,0,0,0.2);
-            position: relative;
         }
 
-        .post-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
+        .node-header {
+            color: var(--neon-amber);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-muted);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #282c34;
-            padding-bottom: 5px;
         }
 
-        .post-id {
-            color: var(--neon-amber);
+        /* --- MATRIX / PROJECT REGISTRY --- */
+        .project-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
-        h2.post-title {
-            color: #fff;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
+        @media (max-width: 600px) {
+            .project-matrix {
+                grid-template-columns: 1fr;
+            }
         }
 
-        h2.post-title span {
-            color: var(--glitch-pink);
-        }
-
-        p {
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
-
-        /* Code / Tech Blocks */
-        pre, code {
-            background-color: #050608;
-            color: #ced4df;
-            font-size: 0.85rem;
-            padding: 10px;
-            border-left: 3px solid var(--neon-amber);
-            overflow-x: auto;
-            margin-bottom: 15px;
-        }
-
-        /* --- CUSTOM AUDIO LOG PLAYER --- */
-        .audio-player-card {
-            background: #090a0c;
+        .project-card {
             border: 1px solid var(--text-muted);
-            padding: 12px;
-            margin: 15px 0;
-        }
-        .audio-label {
-            font-size: 0.75rem;
-            color: var(--neon-green);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-        audio {
-            width: 100%;
-            height: 30px;
-            border-radius: 0;
-            filter: invert(1) hue-rotate(90deg) saturate(2); /* Industrializes default player */
-        }
-
-        /* --- SIDEBAR PANEL --- */
-        aside .panel {
-            border: var(--border-style);
+            background: var(--terminal-dark);
             padding: 15px;
-            background-color: #090a0c;
-            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        aside h3 {
-            color: var(--neon-amber);
-            font-size: 1rem;
+        .project-card:hover {
+            border-color: var(--glitch-pink);
+        }
+
+        .project-tag {
+            font-size: 0.7rem;
+            color: var(--glitch-pink);
             text-transform: uppercase;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--text-muted);
-            padding-bottom: 3px;
+            font-weight: bold;
         }
 
-        aside ul {
-            list-style: none;
+        .project-name {
+            color: #fff;
+            font-size: 1.1rem;
+            margin: 5px 0 10px 0;
+            text-transform: uppercase;
         }
 
-        aside ul li {
+        .project-desc {
             font-size: 0.85rem;
-            margin-bottom: 8px;
+            color: var(--text-primary);
+            margin-bottom: 15px;
         }
 
-        aside ul li a {
+        .project-link {
+            font-size: 0.85rem;
+            color: var(--neon-green);
+            text-decoration: none;
+            align-self: flex-start;
+        }
+        
+        .project-link:hover {
+            background: var(--neon-green);
+            color: #000;
+        }
+
+        /* --- RECENT PACKETS (LOG FEED) --- */
+        .packet-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 5px;
+            border-bottom: 1px dashed #1c2026;
+            font-size: 0.9rem;
+        }
+
+        .packet-row:hover {
+            background: rgba(255, 176, 0, 0.05);
+        }
+
+        .packet-date {
+            color: var(--text-muted);
+            min-width: 100px;
+        }
+
+        .packet-title {
+            flex-grow: 1;
+            padding-left: 15px;
+        }
+
+        .packet-title a {
             color: var(--text-primary);
             text-decoration: none;
         }
 
-        aside ul li a:hover {
+        .packet-title a:hover {
+            color: var(--neon-amber);
+        }
+
+        .packet-stat {
             color: var(--neon-green);
-            text-decoration: underline;
+            font-size: 0.8rem;
         }
 
-        .status-dot {
-            height: 8px;
-            width: 8px;
-            background-color: var(--neon-green);
-            display: inline-block;
-            border-radius: 50%;
-            margin-right: 5px;
-            box-shadow: 0 0 6px var(--neon-green);
+        /* --- SIDE PANEL DETAILS --- */
+        .sidebar-module {
+            border: var(--border-style);
+            background: var(--terminal-dark);
+            padding: 15px;
+            margin-bottom: 20px;
         }
 
-        /* --- FOOTER --- */
-        footer {
-            margin-top: 40px;
-            border-top: 1px solid var(--text-muted);
-            padding-top: 15px;
-            text-align: center;
-            font-size: 0.75rem;
+        .sidebar-module h3 {
+            color: #fff;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 5px;
+            border-left: 3px solid var(--glitch-pink);
+        }
+
+        .manifesto-snippet {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #8a93a1;
+            line-height: 1.6;
+        }
+
+        /* HARDWARE STATUS LIST */
+        .status-list {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .status-list li {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-label {
             color: var(--text-muted);
+        }
+
+        .status-val {
+            font-weight: bold;
+        }
+
+        .status-online { color: var(--neon-green); }
+        .status-active { color: var(--neon-amber); }
+
+        /* --- STICKER / FOOTER BANNER --- */
+        footer {
+            margin-top: 30px;
+            border-top: 2px dashed var(--text-muted);
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .warning-ticker {
+            background: #2b000a;
+            color: var(--glitch-pink);
+            font-size: 0.8rem;
+            padding: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid var(--glitch-pink);
         }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    
-    <!-- HEADER -->
+<div class="container">
+
+    <!-- HEADER STATUS PANEL -->
     <header>
-<div class="ascii-art">
- _   _  _   _  ____   ___   __    _  _  ____  ____   ___ 
-( )_( )( )_( )(  _ \ / __)/ __)  ( \/ )(  _ \(  _ \ / __)
- ) _ (  ) _ (  )   /( (_-.\__ \   \  /  )___/ )   /( (_-.
-(_) (_)(_) (_)(_)\_) \___/(___/    \/  (__)  (_)\_) \___/</div>
+        <div class="system-matrix">
+            <span>NODE_ID: HARDWARE_MUTATION // MAIN_GW</span>
+            <span>LOC: [CENTRAL_GRID]</span>
+            <span>SYS_STATUS: OPERATIONAL</span>
+        </div>
+
+<div class="ascii-logo">
+██╗  ██╗ █████╗ ██████╗ ██████╗ ██╗    ██╗ █████╗ ██████╗ ███████╗    ███╗   ███╗██╗   ██╗████████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+██║  ██║██╔══██╗██╔══██╗██╔══██╗██║    ██║██╔══██╗██╔══██╗██╔════╝    ████╗ ████║██║   ██║╚══██╔══╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+███████║███████║██████╔╝██║  ██║██║ █╗ ██║███████║██████╔╝█████╗      ██╔████╔██║██║   ██║   ██║   ███████║   ██║   ██║██║   ██║██╔██╗ ██║
+██╔══██║██╔══██║██╔══██╗██║  ██║██║███╗██║██╔══██║██╔══██╗██╔══╝      ██║╚██╔╝██║██║   ██║   ██║   ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+██║  ██║██║  ██║██║  ██║██████╔╝╚███╔███╔╝██║  ██║██║  ██║███████╗    ██║ ╚═╝ ██║╚██████╔╝   ██║   ██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝</div>
+
         <h1>Hardware Mutation</h1>
-        <div class="subtitle">// Solder, Noise, Synthesizers, & Broken Code</div>
-        
+        <div class="tagline">>> Central hub for analog sound machines, structural code, and workshop junk</div>
+
         <nav>
-            <a href="#" class="active">[LOGS]</a>
-            <a href="#">[PROJECTS]</a>
-            <a href="#">[INVENTORY]</a>
-            <a href="#">[MANIFESTO]</a>
+            <a href="#" class="active">0x00_HOME</a>
+            <a href="#">0x01_LOGS</a>
+            <a href="#">0x02_PROJECT_LOGS</a>
+            <a href="#">0x03_THE_BINS</a>
+            <a href="#">0x04_MANIFESTO</a>
         </nav>
     </header>
 
-    <!-- MAIN BODY -->
-    <div class="grid">
-        
-        <!-- LEFT COLUMN: BLOG POSTS -->
+    <!-- MAIN TWO-COLUMN DASHBOARD -->
+    <div class="dashboard-grid">
+
+        <!-- COLUMN 1: INTERFACE CONTENTS -->
         <main>
             
-            <!-- POST 1 -->
-            <article>
-                <div class="post-meta">
-                    <span class="post-id">LOG_042</span>
-                    <span>TIMESTAMP: 2026.06.01_21:12</span>
+            <!-- SECTION: ACTIVE PROJECTS -->
+            <div class="node-section">
+                <div class="node-header">
+                    <span>[01 // ACTIVE_PROJECT_REGISTRY]</span>
+                    <span>QTY: 04</span>
                 </div>
-                <h2 class="post-title">Reflowing Solder & <span>Audio Artifacts</span></h2>
-                <p>Spent the evening reviving a dead handheld game circuit board. The traces were clean, but several surface-mount chips had fractured joints from years of oxidation and vibration. Brought out the hot air rework station to reflow the connections.</p>
                 
-                <pre>
-[TOOLSET SETTINGS]
-> Tool: 858D Hot Air Rework
-> Temperature: 340°C
-> Airflow: Level 4
-> Flux: Rosin-based NC</pre>
-                
-                <p>After hitting the lead-free solder points with fresh flux and localized heat, the board booted right up. However, the internal audio amplifier circuit is now outputting a weird, rhythmic high-frequency parasitic hum. Perfect candidate for circuit bending later this week.</p>
-                
-                <div class="audio-player-card">
-                    <div class="audio-label">Raw Audio Output Capture (Parasitic Hum #1)</div>
-                    <!-- Replace src with your audio file paths later -->
-                    <audio controls src=""></audio> 
-                </div>
-            </article>
+                <div class="project-matrix">
+                    
+                    <!-- PROJECT 1 -->
+                    <div class="project-card">
+                        <div>
+                            <div class="project-tag">#AUDIO_HARDWARE</div>
+                            <h3 class="project-name">Eurorack-Mutilator</h3>
+                            <p class="project-desc">Building a custom, messy custom step-sequencer module. Focus on rough logic switching and clock modulation manipulation.</p>
+                        </div>
+                        <a href="#" class="project-link">[VIEW_BUILD_LOG ->]</a>
+                    </div>
 
-            <!-- POST 2 -->
-            <article>
-                <div class="post-meta">
-                    <span class="post-id">LOG_041</span>
-                    <span>TIMESTAMP: 2026.05.24_02:45</span>
+                    <!-- PROJECT 2 -->
+                    <div class="project-card">
+                        <div>
+                            <div class="project-tag">#DIY_ELECTRONICS</div>
+                            <h3 class="project-name">Cyberdeck_V1</h3>
+                            <p class="project-desc">Heavy-duty, field-ready portable compute terminal. Built using rugged components, structural hinges, and custom internal wiring paths.</p>
+                        </div>
+                        <a href="#" class="project-link">[VIEW_BUILD_LOG ->]</a>
+                    </div>
+
+                    <!-- PROJECT 3 -->
+                    <div class="project-card">
+                        <div>
+                            <div class="project-tag">#AUTOMATION</div>
+                            <h3 class="project-name">Risk_Engine_Py</h3>
+                            <p class="project-desc">Modular algorithmic testing blocks script built in Python. Creating structured execution routines for handling automation signals.</p>
+                        </div>
+                        <a href="#" class="project-link">[VIEW_SOURCE_CODE ->]</a>
+                    </div>
+
+                    <!-- PROJECT 4 -->
+                    <div class="project-card">
+                        <div>
+                            <div class="project-tag">#SERVERS</div>
+                            <h3 class="project-name">The_Iron_Vault</h3>
+                            <p class="project-desc">Local media and project archival storage array built out of repurposed enterprise scraps and high-capacity drives.</p>
+                        </div>
+                        <a href="#" class="project-link">[VIEW_SPECS ->]</a>
+                    </div>
+
                 </div>
-                <h2 class="post-title">Building custom <span>Astro widgets</span></h2>
-                <p>Decided to move away from heavy frameworks. Rebuilding the layout engine using zero-JS structural templates. Testing a new custom component that dynamically reads local Markdown directories and maps out hardware component lists based on frontmatter metadata tags.</p>
-                <code>const builds = await Astro.glob('../posts/*.md');</code>
-                <p>The layout feels fast, unbloated, and fits perfectly into the terminal-zine aesthetic without any tracking scripts or bloated modern layout layers.</p>
-            </article>
+            </div>
+
+            <!-- SECTION: RECENT TRANSMISSIONS -->
+            <div class="node-section">
+                <div class="node-header">
+                    <span>[02 // RECENT_TRANSMISSIONS]</span>
+                    <span>FEED: STABLE</span>
+                </div>
+
+                <div class="packet-feed">
+                    <div class="packet-row">
+                        <span class="packet-date">2026.06.01</span>
+                        <span class="packet-title"><a href="#">Reflowing oxidized traces on an ancient handheld soundcard</a></span>
+                        <span class="packet-stat">[FIXED]</span>
+                    </div>
+                    <div class="packet-row">
+                        <span class="packet-date">2026.05.28</span>
+                        <span class="packet-title"><a href="#">Stripping down a 90s industrial aesthetic framework using raw Astro components</a></span>
+                        <span class="packet-stat">[LOGGED]</span>
+                    </div>
+                    <div class="packet-row">
+                        <span class="packet-date">2026.05.19</span>
+                        <span class="packet-title"><a href="#">Calibrating heat ranges for lead-free solder vs vintage electronics boards</a></span>
+                        <span class="packet-stat">[NOTES]</span>
+                    </div>
+                    <div class="packet-row">
+                        <span class="packet-date">2026.05.10</span>
+                        <span class="packet-title"><a href="#">Assembling the weather telemetry monitoring rig</a></span>
+                        <span class="packet-stat">[ONLINE]</span>
+                    </div>
+                </div>
+            </div>
 
         </main>
 
-        <!-- RIGHT COLUMN: SIDEBAR -->
+        <!-- COLUMN 2: SIDEBAR METRICS -->
         <aside>
             
-            <!-- SYSTEM STATUS -->
-            <div class="panel">
-                <h3>System Status</h3>
-                <ul>
-                    <li><span class="status-dot"></span> Node: Online</li>
-                    <li>Location: Central Grid</li>
-                    <li>Current Project: Audio-Rig-V2</li>
+            <!-- LAB OBJECTIVE -->
+            <div class="sidebar-module">
+                <h3>Core Directive</h3>
+                <p class="manifesto-snippet">
+                    "The modern web is too clean, too predictable, and heavily over-engineered. This node is an anchor point back to raw hardware, messy wires, custom code blocks, and audio experiments that refuse to fit nicely into standard tracks."
+                </p>
+            </div>
+
+            <!-- WORKBENCH STATE -->
+            <div class="sidebar-module">
+                <h3>Workbench Metrics</h3>
+                <ul class="status-list">
+                    <li>
+                        <span class="status-label">Iron Temp:</span>
+                        <span class="status-val status-active">340°C</span>
+                    </li>
+                    <li>
+                        <span class="status-label">OS Environment:</span>
+                        <span class="status-val">Linux/Astro</span>
+                    </li>
+                    <li>
+                        <span class="status-label">Primary Tool:</span>
+                        <span class="status-val">Solder/Python</span>
+                    </li>
+                    <li>
+                        <span class="status-label">Lab Audio:</span>
+                        <span class="status-val status-online">Industrial Loop #09</span>
+                    </li>
                 </ul>
             </div>
 
-            <!-- RECENT RADAR -->
-            <div class="panel">
-                <h3>Active Lab Projects</h3>
-                <ul>
-                    <li><a href="#">-> DIY Eurorack Module Case</a></li>
-                    <li><a href="#">-> Custom Macro-Pad Firmware</a></li>
-                    <li><a href="#">-> Automated Risk Modules (Python)</a></li>
-                </ul>
-            </div>
-
-            <!-- HARDWARE SCRAPBOOK -->
-            <div class="panel">
-                <h3>Salvage Bin</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">Current junk inventory tracking:</p>
-                <ul>
-                    <li>- 2x Raspberry Pi Zero W</li>
-                    <li>- 1x Solderless Breadboard</li>
-                    <li>- Miscellaneous 10k Potentiometers</li>
+            <!-- HARDWARE LINKS / INDEX -->
+            <div class="sidebar-module">
+                <h3>Connected Terminals</h3>
+                <ul class="status-list" style="line-height: 1.8;">
+                    <li><a href="#" style="color: var(--neon-amber); text-decoration: none;">-> Source Code (Git)</a></li>
+                    <li><a href="#" style="color: var(--neon-amber); text-decoration: none;">-> Audio Archive (Bandcamp)</a></li>
+                    <li><a href="#" style="color: var(--neon-amber); text-decoration: none;">-> Text Feed (RSS)</a></li>
                 </ul>
             </div>
 
         </aside>
-
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER / ALARM TICKER -->
     <footer>
-        <p>+++ ESCAPE THE ALGORITHM // BUILD THINGS THAT MAKE NOISE +++</p>
+        <div class="warning-ticker">
+            WARNING: SYSTEM EMITTING HIGH UNCALIBRATED AUDIO FREQUENCIES // PROCEED WITH CAUTION
+        </div>
+        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 15px;">
+            RAW_NODE v1.0.0 // NO COOKIES // NO TRACKERS // OPERATING IN THE SHADOWS
+        </p>
     </footer>
 
 </div>
