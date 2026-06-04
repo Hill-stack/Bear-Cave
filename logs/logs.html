@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ HARDWARE_MUTATION // LOG_STREAM ]</title>
+    <style>
+        /* --- SYSTEM ARCHITECTURE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #08090a;
+            --panel-bg: #101216;
+            --text-primary: #a3b8cc;
+            --text-muted: #4f5b66;
+            --neon-green: #00ff66;
+            --neon-amber: #ffb000;
+            --glitch-pink: #ff0055;
+            --terminal-dark: #040506;
+            --border-style: 2px solid #22262e;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.5;
+            padding: 15px;
+        }
+
+        /* CRT SCANLINE OVERLAY */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: var(--border-style);
+            background-color: var(--panel-bg);
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        /* --- HEADER SUB-COMPONENTS --- */
+        header {
+            border-bottom: 3px double var(--text-muted);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .sys-breadcrumbs {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .sys-breadcrumbs a {
+            color: var(--neon-amber);
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+
+        /* --- LAYOUT GRID: STREAM & FILTER --- */
+        .log-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .log-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- LEFT SIDEBAR: FILTERS / MATRIX --- */
+        .filter-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .meta-box {
+            border: var(--border-style);
+            background: var(--terminal-dark);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .meta-box h3 {
+            color: var(--neon-green);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--text-muted);
+            padding-bottom: 4px;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag-cloud a {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            border: 1px solid var(--text-muted);
+            padding: 2px 6px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .tag-cloud a:hover, .tag-cloud a.active {
+            background: var(--glitch-pink);
+            color: #fff;
+            border-color: var(--glitch-pink);
+        }
+
+        /* --- RIGHT STREAM: CHRONOLOGICAL LOGS --- */
+        .log-stream {
+            border-left: 2px dashed #1c2026;
+            padding-left: 25px;
+        }
+
+        @media (max-width: 850px) {
+            .log-stream {
+                border-left: none;
+                padding-left: 0;
+            }
+        }
+
+        .log-entry {
+            position: relative;
+            margin-bottom: 45px;
+            background: rgba(5, 6, 8, 0.5);
+            border: 1px solid #1c2026;
+            padding: 20px;
+        }
+
+        /* Timeline Node Dot */
+        .log-entry::before {
+            content: "■";
+            color: var(--neon-amber);
+            position: absolute;
+            left: -32px;
+            top: 20px;
+            background: var(--panel-bg);
+            font-size: 0.8rem;
+            display: block;
+            width: 12px;
+            height: 12px;
+            text-align: center;
+            line-height: 12px;
+        }
+
+        @media (max-width: 850px) {
+            .log-entry::before { display: none; }
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #22262e;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .log-title {
+            color: #fff;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+        }
+
+        .log-title a {
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .log-title a:hover {
+            color: var(--neon-green);
+        }
+
+        .log-date {
+            font-size: 0.8rem;
+            color: var(--neon-amber);
+            font-weight: bold;
+        }
+
+        .log-body p {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        /* Code/Data blocks inside logs */
+        .data-dump {
+            background: var(--terminal-dark);
+            border-left: 3px solid var(--glitch-pink);
+            padding: 12px;
+            font-size: 0.85rem;
+            font-family: monospace;
+            color: #ced4df;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .log-tags {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            border-top: 1px dashed #1c2026;
+            padding-top: 8px;
+        }
+
+        .log-tags span {
+            color: var(--text-primary);
+            margin-right: 10px;
+        }
+
+        /* --- BOTTOM PACKET COMMAND BOX --- */
+        .terminal-input-box {
+            background: var(--terminal-dark);
+            border: var(--border-style);
+            padding: 12px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            color: var(--neon-green);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .terminal-mock-input {
+            color: var(--text-primary);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { border-right: 2px solid var(--neon-green); }
+            50%, 100% { border-right: 2px solid transparent; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="sys-breadcrumbs">
+            <a href="index.html">GUEST@MUTATION_CORE</a> // <a href="index.html">0x00_HOME</a> // <span>0x01_LOGS</span>
+        </div>
+        <h1>Transmission Stream</h1>
+    </header>
+
+    <div class="log-layout">
+
+        <aside class="filter-sidebar">
+            
+            <div class="meta-box">
+                <h3>Categorization Indices</h3>
+                <div class="tag-cloud">
+                    <a href="#" class="active">[ALL_TRANSMISSIONS]</a>
+                    <a href="#">#hardware</a>
+                    <a href="#">#audio_tests</a>
+                    <a href="#">#circuit_bending</a>
+                    <a href="#">#firmware</a>
+                    <a href="#">#python_scraps</a>
+                    <a href="#">#assemblies</a>
+                    <a href="#">#rant</a>
+                </div>
+            </div>
+
+            <div class="meta-box">
+                <h3>Stream Analytics</h3>
+                <p style="font-size:0.8rem; line-height: 1.8;">
+                    TOTAL_LOGS: 42<br>
+                    LAST_ENTRY: 2026.06.01<br>
+                    RETENTION: INDEFINITE<br>
+                    ENCRYPTION: NONE // OPEN
+                </p>
+            </div>
+
+        </aside>
+
+        <main class="log-stream">
+
+            <article class="log-entry">
+                <div class="log-header">
+                    <h2 class="log-title"><a href="#">Reflowing Oxidized SMT Tracks</a></h2>
+                    <span class="log-date">[2026.06.01]</span>
+                </div>
+                <div class="log-body">
+                    <p>Pulled apart a dead portable voice synthesizer engine from 1994. Under the loupe, three traces leading out of the custom oscillator logic chip were completely trace-fractured from humidity and board flexure.</p>
+                    <p>Cleaned up the surface areas with pure isopropyl alcohol, coated the component pin legs in liquid rosin flux, and laid down a crisp bead of 63/37 leaded solder with a knife-tip iron at 320°C.</p>
+                    <div class="data-dump">
+>>> VERIFYING CONTINUITY...
+>>> PIN_04 -> CAP_12: 0.2 Ohms [PASS]
+>>> PIN_05 -> RES_09: 0.1 Ohms [PASS]
+>>> STATUS: OSCILLATOR CRANKING STABLE AT 440HZ
+                    </div>
+                    <p>The audio rails are firing cleanly now. No more sudden bias shifts or hardware lock-ups when the chassis gets compressed.</p>
+                </div>
+                <div class="log-tags">
+                    Filed under: <span>#hardware</span> <span>#circuit_bending</span> <span>#audio_tests</span>
+                </div>
+            </article>
+
+            <article class="log-entry">
+                <div class="log-header">
+                    <h2 class="log-title"><a href="#">Stripping Astro to Static Skeletal Engine</a></h2>
+                    <span class="log-date">[2026.05.28]</span>
+                </div>
+                <div class="log-body">
+                    <p>I can't stand modern boilerplate. Standard project bundles ship with 40MB of node modules just to spit out text files. Gutted my layout routing down to zero-JS structural wrappers.</p>
+                    <p>The output files deploy directly as flat asset structures now. Rendering speeds hit near-instantaneous marks because there are no asynchronous dehydration routines hanging onto the DOM layer.</p>
+                </div>
+                <div class="log-tags">
+                    Filed under: <span>#firmware</span> <span>#python_scraps</span>
+                </div>
+            </article>
+
+            <article class="log-entry">
+                <div class="log-header">
+                    <h2 class="log-title"><a href="#">The Eurorack Control Grid Failure</a></h2>
+                    <span class="log-date">[2026.05.19]</span>
+                </div>
+                <div class="log-body">
+                    <p>Blew out a linear voltage regulator this morning. Wired up a 10-pin patch header reversed like an amateur because I didn't verify the red stripe indicator line on the ribbon connector wire cable ribbon layout.</p>
+                    <p>Smelled the magic smoke instantly. The protection diode did its job and tanked the current dump, sacrificing itself to keep the internal logic safe. Solder rework scheduled for tomorrow night.</p>
+                </div>
+                <div class="log-tags">
+                    Filed under: <span>#hardware</span> <span>#assemblies</span>
+                </div>
+            </article>
+
+        </main>
+
+    </div>
+
+    <div class="terminal-input-box">
+        <span class="terminal-prompt">GUEST@MUTATION_LOGS:~$</span>
+        <span class="terminal-mock-input">tail -f /var/log/transmissions_</span>
+    </div>
+
+</div>
+
+</body>
+</html>
