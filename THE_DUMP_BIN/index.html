@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>\[ THE_BINS // RANDOM_DUMPS \]</title>
+    <style>
+        /* --- CORE ARCHITECTURE & SYSTEM VARIABLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --bg-color: #08090a;
+            --panel-bg: #101216;
+            --text-primary: #a3b8cc;
+            --text-muted: #4f5b66;
+            --neon-green: #00ff66;
+            --neon-amber: #ffb000;
+            --glitch-pink: #ff0055;
+            --terminal-dark: #040506;
+            --border-style: 2px solid #22262e;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.5;
+            padding: 15px;
+            position: relative;
+        }
+        /* CRT SCANLINE OVERLAY */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            bottom: 0; 
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: var(--border-style);
+            background-color: var(--panel-bg);
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+        /* --- INTERFACE BANNER & UTILITIES --- */
+        header {
+            border-bottom: 3px double var(--text-muted);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .system-matrix {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--text-muted);
+            padding-bottom: 5px;
+        }
+        .ascii-logo {
+            color: var(--neon-green);
+            font-size: 7px;
+            line-height: 1.1;
+            white-space: pre;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            text-shadow: 0 0 4px rgba(0, 255, 102, 0.4);
+        }
+        h1 {
+            color: #fff;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 0 0 5px var(--glitch-pink);
+        }
+        .tagline {
+            color: var(--neon-amber);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        /* --- GLOBAL NAVIGATION --- */
+        nav {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 4px 10px;
+            border: 1px solid var(--text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+        }
+        nav a:hover, 
+        nav a.active {
+            background-color: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+        }
+        /* --- HOMEPAGE DASHBOARD GRID --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 25px;
+        }
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* --- MAIN CORE NODE --- */
+        .node-section {
+            border: var(--border-style);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .node-header {
+            color: var(--neon-amber);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-muted);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* --- SIDE PANEL DETAILS --- */
+        .sidebar-module {
+            border: var(--border-style);
+            background: var(--terminal-dark);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .sidebar-module h3 {
+            color: #fff;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 5px;
+            border-left: 3px solid var(--glitch-pink);
+        }
+        .manifesto-snippet {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #8a93a1;
+            line-height: 1.6;
+        }
+        /* --- STICKER / FOOTER BANNER --- */
+        footer {
+            margin-top: 30px;
+            border-top: 2px dashed var(--text-muted);
+            padding-top: 20px;
+            text-align: center;
+        }
+        .warning-ticker {
+            background: #2b000a;
+            color: var(--glitch-pink);
+            font-size: 0.8rem;
+            padding: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid var(--glitch-pink);
+        }
+        .footer-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        /* =========================================
+           NEW CLASSES FOR THE BINS / SHITPOSTS
+           ========================================= */
+        .dump-post {
+            background: var(--terminal-dark);
+            border: 1px solid var(--text-muted);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--glitch-pink);
+        }
+        .dump-post:nth-child(even) {
+            border-left: 4px solid var(--neon-amber);
+        }
+        .dump-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #1c2026;
+            padding-bottom: 5px;
+        }
+        .dump-title {
+            color: #fff;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        .dump-date {
+            color: var(--neon-green);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .dump-content {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .dump-tags {
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .dump-tags span {
+            color: var(--glitch-pink);
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- HEADER -->
+    <header>
+        <div class="system-matrix">
+            <span>NODE_ID: HARDWARE_MUTATION // THE_BINS</span>
+            <span>LOC: \[SECTOR_7\]</span>
+            <span>SYS_STATUS: CHAOTIC</span>
+        </div>
+        <div class="ascii-logo">
+████████╗██╗  ██╗███████╗    ██████╗ ██╗███╗   ██╗
+╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██║████╗  ██║
+   ██║   ███████║█████╗      ██████╔╝██║██╔██╗ ██║
+   ██║   ██╔══██║██╔══╝      ██╔══██╗██║██║╚██╗██║
+   ██║   ██║  ██║███████╗    ██████╔╝██║██║ ╚████║
+   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═════╝ ╚═╝╚═╝  ╚═══╝</div>
+        <h1>The Bins</h1>
+        <div class="tagline">>> Brain dumps, failed experiments, and general dumb shit</div>
+
+        <!-- NAVIGATION -->
+        <nav>
+            <a href="index.html">0x00_HOME</a>
+            <!-- <a href="logs.html">0x01_LOGS</a> -->
+            <!-- <a href="#">0x02_PROJECT_LOGS</a> -->
+            <a href="#" class="active">0x03_THE_BINS</a>
+            <!-- <a href="#">0x04_MANIFESTO</a> -->
+        </nav>
+    </header>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+        <!-- COLUMN 1: THE DUMPS -->
+        <main>
+            <div class="node-section">
+                <div class="node-header">
+                    <span>\[ RAW_MEMORY_DUMPS \]</span>
+                </div>
+
+                <!-- DUMP 1 -->
+                <article class="dump-post">
+                    <div class="dump-header">
+                        <h2 class="dump-title">Letting the Magic Smoke Out</h2>
+                        <span class="dump-date">2026.08.14 @ 03:00</span>
+                    </div>
+                    <div class="dump-content">
+                        <p>Note to self: 12V and 5V rails are not interchangeable just because the jumper wires are both red. Blew the voltage regulator on the new synth board entirely off the PCB. It made a very satisfying 'pop' before smelling like burnt plastic and bad decisions. Guess I'm ordering from DigiKey again.</p>
+                    </div>
+                    <div class="dump-tags">
+                        <span>#magic_smoke</span> <span>#whoops</span> <span>#3AM_engineering</span>
+                    </div>
+                </article>
+
+                <!-- DUMP 2 -->
+                <article class="dump-post">
+                    <div class="dump-header">
+                        <h2 class="dump-title">Why do we still use Phillips screws?</h2>
+                        <span class="dump-date">2026.08.10 @ 14:22</span>
+                    </div>
+                    <div class="dump-content">
+                        <p>I just stripped three screws trying to open this vintage 90s chassis. Torx exists. Hex exists. Why did humanity settle on a screw head specifically designed to cam out and ruin your day? I ended up having to Dremel a slot into the head just to get it out with a flathead. Absolute garbage.</p>
+                    </div>
+                    <div class="dump-tags">
+                        <span>#rants</span> <span>#hardware_hell</span>
+                    </div>
+                </article>
+
+                <!-- DUMP 3 -->
+                <article class="dump-post">
+                    <div class="dump-header">
+                        <h2 class="dump-title">Desk is officially a hazard</h2>
+                        <span class="dump-date">2026.08.01 @ 21:45</span>
+                    </div>
+                    <div class="dump-content">
+                        <p>Current desk inventory: 4 half-finished microcontrollers, a soldering iron I forgot to turn off for an hour, 12 empty coffee cups, and a pile of resistors I knocked off the strip so now I have to measure them individually to know what they are. I should probably clean this up. I won't, but I should.</p>
+                    </div>
+                    <div class="dump-tags">
+                        <span>#workspace</span> <span>#chaos</span>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+
+        <!-- COLUMN 2: SIDEBAR -->
+        <aside>
+            <div class="sidebar-module">
+                <h3>About /The Bins</h3>
+                <p class="manifesto-snippet">
+                    "This is the uncurated feed. No polished build logs, no finished projects. Just raw complaining, broken parts, and whatever else I feel like throwing into the void when standard logging feels too formal."
+                </p>
+            </div>
+
+            <div class="sidebar-module">
+                <h3>Current Vibe</h3>
+                <ul class="status-list">
+                    <li>
+                        <span class="status-label">Caffeine Lvl:</span>
+                        <span class="status-val status-active">CRITICAL</span>
+                    </li>
+                    <li>
+                        <span class="status-label">Burnt Fingers:</span>
+                        <span class="status-val">3</span>
+                    </li>
+                    <li>
+                        <span class="status-label">Desk Status:</span>
+                        <span class="status-val" style="color: var(--glitch-pink);">DISASTER_AREA</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="warning-ticker">
+            WARNING: CONTENT MAY CONTAIN TRACES OF FRUSTRATION AND POOR SOLDERING
+        </div>
+        <p class="footer-meta">
+            THE_BINS_GW // AUTO-FLUSHING EVERY 30 DAYS (MAYBE)
+        </p>
+    </footer>
+</div>
+</body>
+</html>
