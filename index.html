@@ -8,7 +8,6 @@
 </head>
 <body>
 <div class="container">
-    <!-- HEADER STATUS PANEL -->
     <header>
         <div class="system-matrix">
             <span>NODE_ID: HARDWARE_MUTATION // MAIN_GW</span>
@@ -24,60 +23,115 @@
 ╚═╝   ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝</div>
         <h1>Hardware Mutation</h1>
         <div class="tagline">&gt;&gt; Personal project hub for logging progress</div>
-
-        <!-- Navbar links -->
         <nav>
             <a href="index.html" class="active">0x00_HOME</a>
             <a href="THE_DUMP_BIN/index.html">0x02_THE_DUMP_BIN</a>
         </nav>
     </header>
 
-    <!-- MAIN TWO-COLUMN DASHBOARD -->
     <div class="dashboard-grid">
-        <!-- COLUMN 1: INTERFACE CONTENTS -->
         <main>
-            <!-- SECTION: ACTIVE PROJECTS -->
+            <!-- RECENT GLOBAL TRANSMISSION -->
             <div class="node-section">
                 <div class="node-header">
-                    <span>\[01 // ACTIVE_PROJECT_REGISTRY\]</span>
-                    <span>QTY: 00</span>
+                    <span>\[01 // LATEST_NETWORK_TRANSMISSION\]</span>
                 </div>
-                <div class="project-matrix">
-                    <!-- Projects go here -->
+                <div id="recent-post-container">
+                    <p style="color: var(--neon-amber);">FETCHING DATA_STREAM...</p>
                 </div>
             </div>
 
-            <!-- SECTION: RECENT TRANSMISSIONS -->
+            <!-- ACTIVE PROJECTS -->
             <div class="node-section">
                 <div class="node-header">
-                    <span>\[02 // RECENT_TRANSMISSIONS\]</span>
+                    <span>\[02 // ACTIVE_PROJECT_REGISTRY\]</span>
+                    <span id="project-qty">QTY: 00</span>
                 </div>
-                <!-- Transmissions go here -->
+                <div class="project-matrix" id="project-matrix-container">
+                    <!-- JS injects here -->
+                </div>
             </div>
         </main>
-
-        <!-- COLUMN 2: SIDEBAR METRICS -->
+        
         <aside>
-            <!-- LAB OBJECTIVE -->
             <div class="sidebar-module">
                 <h3>Core Directive</h3>
                 <p class="manifesto-snippet">
-                    "The modern web is too clean, too predictable, and heavily over-engineered. This node is an anchor point back to raw hardware, messy wires, custom code blocks, and audio experiments that refuse to fit nicely into standard tracks."
+                    "The modern web is too clean, too predictable, and heavily over-engineered. This node is an anchor point back to raw hardware, messy wires, custom code blocks, and audio experiments."
                 </p>
             </div>
-
-            <!-- WORKBENCH STATE -->
             <div class="sidebar-module">
                 <h3>Workbench Metrics</h3>
                 <ul class="status-list">
-                    <li>
-                        <span class="status-label">Iron Temp:</span>
-                        <span class="status-val status-active">???</span>
-                    </li>
-                    <li>
-                        <span class="status-label">OS Environment:</span>
-                        <span class="status-val">Windows_10/Linux_Mint</span>
-                    </li>
-                    <li>
-                        <span class="status-label">Primary Tool:</span>
-                        <span class="status-val">Sold
+                    <li><span class="status-label">Iron Temp:</span><span class="status-val status-active">350°C</span></li>
+                    <li><span class="status-label">OS Environment:</span><span class="status-val">Windows_10/Linux_Mint</span></li>
+                    <li><span class="status-label">Primary Tool:</span><span class="status-val">Solder/Python</span></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <div class="warning-ticker">WARNING: ABSOLUTE IDIOT PLAYING WITH DANGEROUS TOOLS // PROCEED WITH CAUTION</div>
+        <p class="footer-meta">RAW_NODE v1.1.0 // DATA FED VIA JSON</p>
+    </footer>
+</div>
+
+<script>
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            // 1. LATEST POST
+            let allLogs = [];
+            data.projects.forEach(proj => {
+                proj.logs.forEach(log => {
+                    allLogs.push({ ...log, projectId: proj.id, projectName: proj.title });
+                });
+            });
+            allLogs.sort((a, b) => b.date.localeCompare(a.date));
+            const latestPost = allLogs[0];
+            const postContainer = document.getElementById('recent-post-container');
+            
+            if (latestPost) {
+                const snippet = latestPost.content.length > 120 ? latestPost.content.substring(0, 120) + '...' : latestPost.content;
+                postContainer.innerHTML = `
+                    <article class="dump-post">
+                        <div class="dump-header">
+                            <h2 class="dump-title">${latestPost.title}</h2>
+                            <span class="dump-date">${latestPost.date}</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--glitch-pink); margin-bottom: 10px;">FROM_NODE: ${latestPost.projectName}</div>
+                        <div class="dump-content"><p>${snippet}</p></div>
+                        <div style="margin-top: 15px;">
+                            <a href="THE_DUMP_BIN/project.html?id=${latestPost.projectId}" style="color: var(--neon-amber); text-decoration: none; font-size: 0.85rem;">[ DECRYPT_FULL_CHAIN -> ]</a>
+                        </div>
+                    </article>
+                `;
+            }
+
+            // 2. PROJECTS LIST
+            const projectContainer = document.getElementById('project-matrix-container');
+            document.getElementById('project-qty').innerText = `QTY: ${data.projects.length.toString().padStart(2, '0')}`;
+            projectContainer.innerHTML = '';
+
+            data.projects.forEach(proj => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="project-tag">${proj.tag}</div>
+                        <h3 class="project-name">${proj.title}</h3>
+                        <p class="project-desc">${proj.desc}</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
+                        <div class="hours-logged">T+ ${proj.hours} HRS</div>
+                        <a href="THE_DUMP_BIN/project.html?id=${proj.id}" class="project-link">\[VIEW -&gt;\]</a>
+                    </div>
+                `;
+                projectContainer.appendChild(card);
+            });
+        })
+        .catch(err => console.error("Error loading JSON:", err));
+</script>
+</body>
+</html>
