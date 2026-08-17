@@ -4,66 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>\[ THE_DUMP_BIN // RANDOM_DUMPS \]</title>
-    <!-- Pointing up one directory to your root CSS file -->
     <link rel="stylesheet" href="../styles.css">
-    <style>
-        /* =========================================
-           PAGE-SPECIFIC CLASSES FOR THE DUMP POSTS
-           ========================================= */
-        .dump-post {
-            background: var(--terminal-dark);
-            border: 1px solid var(--text-muted);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--glitch-pink);
-        }
-        .dump-post:nth-child(even) {
-            border-left: 4px solid var(--neon-amber);
-        }
-        .dump-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
-            border-bottom: 1px dashed #1c2026;
-            padding-bottom: 5px;
-        }
-        .dump-title {
-            color: #fff;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
-        .dump-date {
-            color: var(--neon-green);
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .dump-content {
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-        .dump-tags {
-            margin-top: 15px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        .dump-tags span {
-            color: var(--glitch-pink);
-            margin-right: 10px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
-    <!-- HEADER -->
     <header>
         <div class="system-matrix">
             <span>NODE_ID: HARDWARE_MUTATION // THE_DUMP_BIN</span>
             <span>LOC: \[SECTOR_7\]</span>
             <span>SYS_STATUS: CHAOTIC</span>
         </div>
-        <div class="ascii-logo">
+<div class="ascii-logo">
 ████████╗██╗  ██╗███████╗    ██████╗ ██╗███╗   ██╗███████╗
 ╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██║████╗  ██║██╔════╝
    ██║   ███████║█████╗      ██████╔╝██║██╔██╗ ██║███████╗
@@ -71,108 +22,78 @@
    ██║   ██║  ██║███████╗    ██████╔╝██║██║ ╚████║███████║
    ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝</div>
         <h1>The Dump Bin</h1>
-        <div class="tagline">&gt;&gt; Brain dumps, failed experiments, and general dumb shit</div>
-
-        <!-- NAVIGATION -->
+        <div class="tagline">&gt;&gt; Project Log Chains & Random Dumps</div>
         <nav>
-            <!-- Link goes UP one directory to root index.html -->
             <a href="../index.html">0x00_HOME</a>
             <a href="#" class="active">0x02_THE_DUMP_BIN</a>
         </nav>
     </header>
 
-    <!-- MAIN GRID -->
     <div class="dashboard-grid">
-        <!-- COLUMN 1: THE DUMPS -->
         <main>
             <div class="node-section">
                 <div class="node-header">
-                    <span>\[ RAW_MEMORY_DUMPS \]</span>
+                    <span>\[ PROJECT_LOG_CHAINS \]</span>
                 </div>
-
-                <!-- DUMP 1 -->
-                <article class="dump-post">
-                    <div class="dump-header">
-                        <h2 class="dump-title">Letting the Magic Smoke Out</h2>
-                        <span class="dump-date">2026.08.14 @ 03:00</span>
-                    </div>
-                    <div class="dump-content">
-                        <p>Note to self: 12V and 5V rails are not interchangeable just because the jumper wires are both red. Blew the voltage regulator on the new synth board entirely off the PCB. It made a very satisfying 'pop' before smelling like burnt plastic and bad decisions. Guess I'm ordering from DigiKey again.</p>
-                    </div>
-                    <div class="dump-tags">
-                        <span>#magic_smoke</span> <span>#whoops</span> <span>#3AM_engineering</span>
-                    </div>
-                </article>
-
-                <!-- DUMP 2 -->
-                <article class="dump-post">
-                    <div class="dump-header">
-                        <h2 class="dump-title">Why do we still use Phillips screws?</h2>
-                        <span class="dump-date">2026.08.10 @ 14:22</span>
-                    </div>
-                    <div class="dump-content">
-                        <p>I just stripped three screws trying to open this vintage 90s chassis. Torx exists. Hex exists. Why did humanity settle on a screw head specifically designed to cam out and ruin your day? I ended up having to Dremel a slot into the head just to get it out with a flathead. Absolute garbage.</p>
-                    </div>
-                    <div class="dump-tags">
-                        <span>#rants</span> <span>#hardware_hell</span>
-                    </div>
-                </article>
-
-                <!-- DUMP 3 -->
-                <article class="dump-post">
-                    <div class="dump-header">
-                        <h2 class="dump-title">Desk is officially a hazard</h2>
-                        <span class="dump-date">2026.08.01 @ 21:45</span>
-                    </div>
-                    <div class="dump-content">
-                        <p>Current desk inventory: 4 half-finished microcontrollers, a soldering iron I forgot to turn off for an hour, 12 empty coffee cups, and a pile of resistors I knocked off the strip so now I have to measure them individually to know what they are. I should probably clean this up. I won't, but I should.</p>
-                    </div>
-                    <div class="dump-tags">
-                        <span>#workspace</span> <span>#chaos</span>
-                    </div>
-                </article>
-
+                <div id="chains-container">
+                    <p style="color: var(--neon-amber);">LOADING ARCHIVES...</p>
+                </div>
             </div>
         </main>
-
-        <!-- COLUMN 2: SIDEBAR -->
+        
         <aside>
             <div class="sidebar-module">
                 <h3>About /The Dump Bin</h3>
                 <p class="manifesto-snippet">
-                    "This is the uncurated feed. No polished build logs, no finished projects. Just raw complaining, broken parts, and whatever else I feel like throwing into the void when standard logging feels too formal."
+                    "Select a node to view its transmission history. Hours logged are tracked via internal telemetry. General rants are classified under the 'General Dumps' node."
                 </p>
-            </div>
-
-            <div class="sidebar-module">
-                <h3>Current Vibe</h3>
-                <ul class="status-list">
-                    <li>
-                        <span class="status-label">Caffeine Lvl:</span>
-                        <span class="status-val status-active">CRITICAL</span>
-                    </li>
-                    <li>
-                        <span class="status-label">Burnt Fingers:</span>
-                        <span class="status-val">3</span>
-                    </li>
-                    <li>
-                        <span class="status-label">Desk Status:</span>
-                        <span class="status-val" style="color: var(--glitch-pink);">DISASTER_AREA</span>
-                    </li>
-                </ul>
             </div>
         </aside>
     </div>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="warning-ticker">
-            WARNING: CONTENT MAY CONTAIN TRACES OF FRUSTRATION AND POOR SOLDERING
-        </div>
-        <p class="footer-meta">
-            THE_DUMP_BIN_GW // AUTO-FLUSHING EVERY 30 DAYS (MAYBE)
-        </p>
-    </footer>
 </div>
+
+<script>
+    fetch('../data.json')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('chains-container');
+            container.innerHTML = ''; 
+
+            data.projects.forEach(proj => {
+                const latestLog = proj.logs[0]; 
+                let logHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">[NO LOGS DETECTED]</p>';
+                
+                if (latestLog) {
+                    const snippet = latestLog.content.length > 120 ? latestLog.content.substring(0, 120) + '...' : latestLog.content;
+                    logHTML = `
+                        <div class="latest-post-preview">
+                            <div class="preview-header">
+                                <span class="preview-title">>> ${latestLog.title}</span>
+                                <span class="preview-date">${latestLog.date}</span>
+                            </div>
+                            <div class="preview-content">"${snippet}"</div>
+                        </div>
+                    `;
+                }
+
+                const chainBox = document.createElement('article');
+                chainBox.className = 'project-log-chain';
+                chainBox.innerHTML = `
+                    <div class="hours-badge">T+ ${proj.hours} HRS</div>
+                    <h2 class="chain-title">${proj.title}</h2>
+                    <span class="chain-tag">${proj.tag}</span>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-primary);">${proj.desc}</p>
+                    
+                    ${logHTML}
+                    
+                    <div style="margin-top: 15px;">
+                        <a href="project.html?id=${proj.id}" style="color: var(--neon-amber); text-decoration: none; font-size: 0.8rem; border: 1px solid var(--text-muted); padding: 2px 5px;">[ DECRYPT_FULL_CHAIN ]</a>
+                    </div>
+                `;
+                container.appendChild(chainBox);
+            });
+        })
+        .catch(err => console.error("Error loading JSON:", err));
+</script>
 </body>
 </html>
