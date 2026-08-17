@@ -25,7 +25,8 @@
         <div class="tagline">&gt;&gt; Project Log Chains & Random Dumps</div>
         <nav>
             <a href="../index.html">0x00_HOME</a>
-            <a href="#" class="active">0x02_THE_DUMP_BIN</a>
+            <a href="../LOGS/index.html">0x01_PERSONAL_LOGS</a>
+            <a href="index.html" class="active">0x02_THE_DUMP_BIN</a>
         </nav>
     </header>
 
@@ -53,7 +54,7 @@
 </div>
 
 <script>
-    fetch('../data.json')
+    fetch('../DATA/data.json')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('chains-container');
@@ -61,7 +62,7 @@
 
             data.projects.forEach(proj => {
                 const latestLog = proj.logs[0]; 
-                let logHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">[NO LOGS DETECTED]</p>';
+                let logHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">\[NO LOGS DETECTED\]</p>';
                 
                 if (latestLog) {
                     const snippet = latestLog.content.length > 120 ? latestLog.content.substring(0, 120) + '...' : latestLog.content;
@@ -87,7 +88,7 @@
                     ${logHTML}
                     
                     <div style="margin-top: 15px;">
-                        <a href="project.html?id=${proj.id}" style="color: var(--neon-amber); text-decoration: none; font-size: 0.8rem; border: 1px solid var(--text-muted); padding: 2px 5px;">[ DECRYPT_FULL_CHAIN ]</a>
+                        <a href="../PROJECTS/project.html?id=${proj.id}" style="color: var(--neon-amber); text-decoration: none; font-size: 0.8rem; border: 1px solid var(--text-muted); padding: 2px 5px;">\[ DECRYPT_FULL_CHAIN \]</a>
                     </div>
                 `;
                 container.appendChild(chainBox);
