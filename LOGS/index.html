@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>\[ PERSONAL_LOGS // BLOG \]</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="system-matrix">
+            <span>NODE_ID: BLOG_ROUTER</span>
+            <span>LOC: \[CENTRAL_GRID\]</span>
+            <span>SYS_STATUS: LOGGING</span>
+        </div>
+<div class="ascii-logo">
+██████╗ ███████╗██████╗ ███████╗ ██████╗ ███╗   ██╗ █████╗ ██╗     
+██╔══██╗██╔════╝██╔══██╗██╔════╝██╔═══██╗████╗  ██║██╔══██╗██║     
+██████╔╝█████╗  ██████╔╝███████╗██║   ██║██╔██╗ ██║███████║██║     
+██╔═══╝ ██╔══╝  ██╔══██╗╚════██║██║   ██║██║╚██╗██║██╔══██║██║     
+██║     ███████╗██║  ██║███████║╚██████╔╝██║ ╚████║██║  ██║███████╗
+╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝</div>
+        <h1>Personal Logs</h1>
+        <div class="tagline">&gt;&gt; General thoughts, updates, and non-project specific entries</div>
+        
+        <nav>
+            <a href="../index.html">0x00_HOME</a>
+            <a href="index.html" class="active">0x01_PERSONAL_LOGS</a>
+            <a href="../THE_DUMP_BIN/index.html">0x02_THE_DUMP_BIN</a>
+        </nav>
+    </header>
+
+    <div class="dashboard-grid">
+        <main>
+            <div class="node-section">
+                <div class="node-header">
+                    <span>\[ TRANSMISSION_CHAIN \]</span>
+                    <span id="total-logs-qty">QTY: 00</span>
+                </div>
+                
+                <div id="blog-logs-container">
+                    <p style="color: var(--neon-amber);">DECRYPTING LOGS...</p>
+                </div>
+            </div>
+        </main>
+        
+        <aside>
+            <div class="sidebar-module">
+                <h3>About This Feed</h3>
+                <p class="manifesto-snippet">
+                    This is the general blog feed. Project-specific build notes are isolated in the Dump Bin. Entries here are chronological.
+                </p>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+    fetch('../DATA/data.json')
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP Status " + response.status);
+            return response.json();
+        })
+        .then(data => {
+            const logsContainer = document.getElementById('blog-logs-container');
+            
+            if (!data.blog_posts) {
+                logsContainer.innerHTML = '<p style="color: var(--glitch-pink);">ERROR: "blog_posts" array is missing from data.json</p>';
+                return;
+            }
+
+            const blogPosts = data.blog_posts;
+            document.getElementById('total-logs-qty').innerText = `QTY: ${blogPosts.length.toString().padStart(2, '0')}`;
+            logsContainer.innerHTML = ''; 
+
+            if (blogPosts.length === 0) {
+                logsContainer.innerHTML = '<p style="color: var(--text-muted);">\[NO LOGS DETECTED\]</p>';
+                return;
+            }
+
+            blogPosts.forEach(log => {
+                const article = document.createElement('article');
+                article.className = 'dump-post';
+                article.innerHTML = `
+                    <div class="dump-header">
+                        <h2 class="dump-title">${log.title}</h2>
+                        <span class="dump-date">${log.date}</span>
+                    </div>
+                    <div class="dump-content"><p>${log.content}</p></div>
+                `;
+                logsContainer.appendChild(article);
+            });
+        })
+        .catch(err => {
+            console.error("Error loading blog logs:", err);
+            document.getElementById('blog-logs-container').innerHTML = `<p style="color: var(--glitch-pink);">SYSTEM FAILURE: Unable to load data.json.</p>`;
+        });
+</script>
+</body>
+</html>
