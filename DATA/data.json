@@ -1,0 +1,68 @@
+{
+  "blog_posts": [
+    {
+      "date": "2026.08.16 @ 09:30",
+      "title": "State of the Workbench",
+      "content": "Decided to separate my general thoughts from my specific hardware builds. This feed will just be my day-to-day nonsense, rants, and updates. The desk is currently a disaster zone but we are making progress."
+    },
+    {
+      "date": "2026.08.14 @ 03:00",
+      "title": "Letting the Magic Smoke Out",
+      "content": "Note to self: 12V and 5V rails are not interchangeable just because the jumper wires are both red. Blew the voltage regulator on the new synth board entirely off the PCB."
+    }
+  ],
+  "projects": [
+    {
+      "id": "cyberdeck",
+      "title": "Cyberdeck_V1",
+      "tag": "#DIY_ELECTRONICS",
+      "desc": "Heavy-duty, field-ready portable compute terminal built from rugged components.",
+      "hours": 114.5,
+      "logs": [
+        {
+          "date": "2026.08.10 @ 14:22",
+          "title": "Why do we still use Phillips screws?",
+          "content": "I just stripped three screws trying to open this vintage 90s chassis. Torx exists. Hex exists. Why did humanity settle on a screw head specifically designed to cam out and ruin your day?"
+        },
+        {
+          "date": "2026.07.28 @ 19:40",
+          "title": "Sourcing the Chassis",
+          "content": "Found an old industrial telecom testing unit at the surplus yard. It's built like a tank. Ripping out the guts today to see if I can fit a Raspberry Pi 5."
+        }
+      ]
+    },
+    {
+      "id": "eurorack",
+      "title": "Eurorack-Mutilator",
+      "tag": "#AUDIO_HARDWARE",
+      "desc": "Custom step-sequencer Eurorack module focused on rough logic switching.",
+      "hours": 42.0,
+      "logs": [
+        {
+          "date": "2026.08.01 @ 21:45",
+          "title": "Desk is officially a hazard",
+          "content": "Current desk inventory: 4 half-finished microcontrollers, a soldering iron I forgot to turn off, and a massive pile of loose resistors."
+        },
+        {
+          "date": "2026.07.10 @ 11:15",
+          "title": "Schematic Drafting Phase",
+          "content": "Sketching the logic gates on scratch paper. I want this module to sound actively broken, introducing intentional clock jitter at high rates."
+        }
+      ]
+    },
+    {
+      "id": "iron_vault",
+      "title": "The_Iron_Vault",
+      "tag": "#SERVERS",
+      "desc": "Local media and project archival storage array built from enterprise scraps.",
+      "hours": 18.2,
+      "logs": [
+        {
+          "date": "2026.08.05 @ 18:30",
+          "title": "Configuring the SAS Controller",
+          "content": "Finally got the LSI HBA card flashed to IT mode. FreeNAS is recognizing all 6 drives natively now. True storage peace of mind achieved."
+        }
+      ]
+    }
+  ]
+}
