@@ -7,6 +7,7 @@
     }
   ],
   "projects": [
+
     {
       "id": "MC_Server",
       "title": "Minecraft Server",
@@ -20,6 +21,22 @@
           "content": "I'm hoping to get started on this project Friday after I get off work. Throughout the week, I might do some conceptual breakdowns and map out the different scripts I need—like an update script and eventually the respawn script—to figure out how they will look. I might also do some brainstorming on other ideas, such as deciding whether to make it a modded server. I'm a bit concerned about the system requirements, though, since I won't be running it on a very powerful computer."
         }
       ]
+    },
+    
+    {
+      "id": "Repairs",
+      "title": "DS Lite Shoulder Switches",
+      "tag": "#Solder_Fuckery",
+      "desc": "Restoring my childhood DS.",
+      "hours": 3,
+      "logs": [
+        {
+          "date": "2026.08.18 @ 17:23",
+          "title": "Where It Stands",
+          "content": ""
+        }
+      ]
     }
+    
   ]
 }
