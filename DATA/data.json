@@ -5,12 +5,15 @@
       "title": "Digital Footprint Red Herring",
       "content": "I have a weird idea for a fun social media project. All the talk about social media at work lately makes me want to start an account filled with fake images of myself. I could make an account where I'm a cryptid hunter—which actually sounds awesome. I can post blurry-ass photos of weird shit in the woods, or maybe a classic fishing picture where I'm holding little creatures instead of a fish. YEahhhhhhh, that's the ticket!"
     },
+
     {
       "date": "2026.08.17 @ 21:17",
       "title": "Hello World!",
       "content": "It seems like I finally have the web page I wanted. I think at some point I'll figure out a way to add images to my project posts, but for now, I am just really happy that I got this thing running the way I wanted. My head is hurting, but I have my lunch meal prep done for the rest of the week, and I am ready to just lie down. I think I will be stuck awake for a little bit longer, though."
     }
+
   ],
+
   "projects": [
 
     {
@@ -54,9 +57,9 @@
             "date": "2026.08.19 @ 09:29",
             "title": "Where to start??",
             "content": ""
-          },
+          }
         ]
-      },
+      }
     
   ]
 }
