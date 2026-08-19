@@ -36,8 +36,64 @@
         {
           "date": "2026.08.18 @ 17:23",
           "title": "Where It Stands",
-          "content": "I've been working on this DS for a little bit now. I replaced the shell and the touch screen a while back, but then my shoulder button failed as I was playing with it. The shoulder button had failed back when I was a kid, then miraculously started working again when I was an adult—but of course, it went back to failing the second I finished replacing its shell. So, I took it upon myself to desolder the old shoulder buttons and attempt to solder on a new pair. God forbid I replaced just the one, only for the other to fail right after.<br style='margin-bottom:20px;'/><p>I nearly caught the PCB on fire trying to use a heat gun to resolder them with some lead-free solder. Despite charring the board, I managed (several days later) to solder on one of the two switches. I haven't checked for continuity yet, so it could still be fucked anyhow. I have yet to solder the electrical connections on the other switch, but it's physically secured by its structural anchoring pins—I bet there's a technical word for that. Hopefully, I can knock out this last switch and check for continuity this weekend."
+{
+  "blog_posts": [
+    {
+      "date": "2026.08.18 @ 13:09",
+      "title": "Digital Footprint Red Herring",
+      "content": "I have a weird idea for a fun social media project. All the talk about social media at work lately makes me want to start an account filled with fake images of myself. I could make an account where I'm a cryptid hunter—which actually sounds awesome. I can post blurry-ass photos of weird shit in the woods, or maybe a classic fishing picture where I'm holding little creatures instead of a fish. YEahhhhhhh, that's the ticket!"
+    },
+    {
+      "date": "2026.08.17 @ 21:17",
+      "title": "Hello World!",
+      "content": "It seems like I finally have the web page I wanted. I think at some point I'll figure out a way to add images to my project posts, but for now, I am just really happy that I got this thing running the way I wanted. My head is hurting, but I have my lunch meal prep done for the rest of the week, and I am ready to just lie down. I think I will be stuck awake for a little bit longer, though."
+    }
+  ],
+  "projects": [
+    {
+      "id": "MC_Server",
+      "title": "Minecraft Server",
+      "tag": "#Scripting_Practice",
+      "desc": "Building a community server in hardcore, with a weekly respawn.",
+      "hours": 0.1,
+      "logs": [
+        {
+          "date": "2026.08.17 @ 21:23",
+          "title": "Opening My First Project",
+          "content": "I'm hoping to get started on this project Friday after I get off work. Throughout the week, I might do some conceptual breakdowns and map out the different scripts I need—like an update script and eventually the respawn script—to figure out how they will look. I might also do some brainstorming on other ideas, such as deciding whether to make it a modded server. I'm a bit concerned about the system requirements, though, since I won't be running it on a very powerful computer."
         }
+      ]
+    },
+    {
+      "id": "Repairs",
+      "title": "DS Lite Shoulder Switches",
+      "tag": "#Solder_Fuckery",
+      "desc": "Restoring my childhood DS.",
+      "hours": 3,
+      "logs": [
+        {
+          "date": "2026.08.18 @ 17:23",
+          "title": "Where It Stands",
+          "content": "I've been working on this DS for a little bit now. I replaced the shell and the touch screen a while back, but then my shoulder button failed as I was playing with it. The shoulder button had failed back when I was a kid, then miraculously started working again when I was an adult—but of course, it went back to failing the second I finished replacing its shell. So, I took it upon myself to desolder the old shoulder buttons and attempt to solder on a new pair. God forbid I replaced just the one, only for the other to fail right after. <br/><br/> I nearly caught the PCB on fire trying to use a heat gun to resolder them with some lead-free solder. Despite charring the board, I managed (several days later) to solder on one of the two switches. I haven't checked for continuity yet, so it could still be fucked anyhow. I have yet to solder the electrical connections on the other switch, but it's physically secured by its structural anchoring pins—I bet there's a technical word for that. Hopefully, I can knock out this last switch and check for continuity this weekend."
+        }
+      ]
+    },
+    {
+      "id": "Prank",
+      "title": "The Gaslight Edit",
+      "tag": "#Video_Editting",
+      "desc": "Making a gaslight edit to show to my shop for a morale day.",
+      "hours": 3,
+      "logs": [
+        {
+          "date": "2026.08.19 @ 09:29",
+          "title": "Where to start??",
+          "content": ""
+        }
+      ]
+    }
+  ]
+}        }
       ]
     },
     {
