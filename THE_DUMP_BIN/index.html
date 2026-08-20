@@ -65,7 +65,7 @@
                 let logHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">\[NO LOGS DETECTED\]</p>';
                 
                 if (latestLog) {
-                    const snippet = latestLog.content.length > 100 ? latestLog.content.substring(0, 100) + '...' : latestLog.content;
+                    const snippet = latestLog.content.length > 30 ? latestLog.content.substring(0, 30) + '...' : latestLog.content;
                     logHTML = `
                         <div class="latest-post-preview">
                             <div class="preview-header">
