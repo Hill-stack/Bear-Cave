@@ -29,10 +29,16 @@
     {
       "id": "Repairs",
       "title": "DS Lite Shoulder Switches",
-      "tag": "#Solder_Fuckery",
+      "tag": "#Solder_Fucked*",
       "desc": "Restoring my childhood DS.",
       "hours": 3,
       "logs": [
+        {
+          "date": "2026.08.24 @ 11:38",
+          "title": "Welp I did in fact fuck it.
+",
+          "content": "Yeah, so I tried soldering on the second switch, and my 'finesse' led to me ripping off one of the three solder pads—so I've kind of fucked it beyond repair. I will concede total defeat on repairing this specific motherboard, butttttttttttttttt that doesn't mean I'm giving up completely on having a sweet-looking new DS. I just ordered a DS Lite motherboard from eBay, so hopefully I can at least toss that into my new shell and get it up and running. We'll see if we run into any problems with that one."
+        },
         {
           "date": "2026.08.18 @ 17:23",
           "title": "Where It Stands",
